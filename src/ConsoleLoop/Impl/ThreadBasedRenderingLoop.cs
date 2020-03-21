@@ -57,7 +57,7 @@ namespace ConsoleLoop
                 if (Tracker.IsChanged(Model))
                 {
                     Console.Clear();
-                    viewRendered = View.Render(Model);
+                    viewRendered = View.Render(Tracker.ModelSnapshot);
                     Console.Write(viewRendered);
                 }
 
