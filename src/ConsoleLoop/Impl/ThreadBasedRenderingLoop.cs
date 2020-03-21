@@ -46,7 +46,7 @@ namespace ConsoleLoop
         private void Loop()
         {
             Console.Clear();
-            var viewRendered = View.Render(Model);
+            var viewRendered = View.Render(Tracker.ModelSnapshot);
             Console.Write(viewRendered);
 
             while (!(_cancellationToken.IsCancellationRequested || Status == RenderingLoopStatuses.Terminated))

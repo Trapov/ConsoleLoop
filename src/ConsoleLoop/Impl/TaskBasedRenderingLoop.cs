@@ -37,7 +37,7 @@ namespace ConsoleLoop
         private async Task Loop()
         {
             Console.Clear();
-            var viewRendered = View.Render(Model);
+            var viewRendered = View.Render(Tracker.ModelSnapshot);
             Console.Write(viewRendered);
 
             while (!_cancellationToken.IsCancellationRequested)
