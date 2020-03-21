@@ -35,3 +35,15 @@ steps:
     packagesToPack: 'src/ConsoleLoop/ConsoleLoop.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'version'
+
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: 'Nuget'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget'
