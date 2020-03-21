@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageIcon>logo.png</PackageIcon>
-
+    <PackageId>ConsoleLoooooop</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
