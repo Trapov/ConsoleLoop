@@ -36,10 +36,6 @@ steps:
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'version'
 
-- task: NuGetAuthenticate@0
-  inputs:
-    nuGetServiceConnections: 'Nuget'
-
 - task: NuGetCommand@2
   displayName: 'NuGet push'
   inputs:
