@@ -17,19 +17,20 @@ namespace ConsoleLoop
 
         public bool IsChanged(TModel model)
         {
+            TModel snapshot = default;
             try
             {
                 _semaphoreSlim.Wait();
-                var snapshot = Snaphsot.From(model);
-                if (Changes.Between(ModelSnapshot, snapshot) == null) return false;
-                ModelSnapshot = snapshot;
-                return true;
+                snapshot = Snaphsot.From(model);
             }
             finally
             {
                 _semaphoreSlim.Release();
             }
 
+            if (Changes.Between(ModelSnapshot, snapshot) == null) return false;
+            ModelSnapshot = snapshot;
+            return true;
         }
     }
 }
