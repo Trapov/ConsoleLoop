@@ -29,18 +29,23 @@ namespace ConsoleLoop
             return this;
         }
 
-        public ConsoleLoopBuilder<TModel> Model<TModel>(TModel model)
+        public ConsoleLoopBuilder<TModel> Model<TModel>(TModel model, out SemaphoreSlim semaphoreSlim)
         {
-            return new ConsoleLoopBuilder<TModel>(model, EventDispatcher, CancellationToken);
+            semaphoreSlim = new SemaphoreSlim(1, 1);
+            return new ConsoleLoopBuilder<TModel>(model, EventDispatcher, semaphoreSlim, CancellationToken);
         }
     }
 
     public sealed class ConsoleLoopBuilder<TModel>
     {
-        public ConsoleLoopBuilder(TModel model, IInputEventDispatcher inputEventDispatcher, CancellationToken cancellationToken = default)
+        public ConsoleLoopBuilder(
+            TModel model,
+            IInputEventDispatcher inputEventDispatcher,
+            SemaphoreSlim semaphoreSlim,
+            CancellationToken cancellationToken = default)
         {
             Model = model;
-            Tracker = new SnapshotChangesTrackerFor<TModel>(model);
+            Tracker = new SnapshotChangesTrackerFor<TModel>(model, semaphoreSlim);
             EventDispatcher = inputEventDispatcher;
             CancellationToken = cancellationToken;
         }

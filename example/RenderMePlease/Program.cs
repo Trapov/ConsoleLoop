@@ -32,6 +32,7 @@ namespace RenderMePlease
                 }
             };
             var cancelletionTokenSource = new CancellationTokenSource();
+            SemaphoreSlim semaphoreSlim = null;
             new ConsoleLoopBuilder(false, cancelletionTokenSource.Token)
                 .WithInputEventHandler(keyInfo => keyInfo.Key == System.ConsoleKey.C && keyInfo.Modifiers == System.ConsoleModifiers.Control, keyInfo =>
                 {
@@ -39,14 +40,23 @@ namespace RenderMePlease
                 })
                 .WithInputEventHandler(_ => true, keyInfo =>
                 {
-                    model.Last =
-                        string.Concat(
-                            keyInfo.Modifiers.ToString().InRed(),
-                            " + ",
-                            keyInfo.Key.ToString().InGreen()
-                        );
+                    try
+                    {
+                        semaphoreSlim.Wait();
+                        model.Last =
+                            string.Concat(
+                                keyInfo.Modifiers.ToString().InRed(),
+                                " + ",
+                                keyInfo.Key.ToString().InGreen()
+                            );
+                    }
+                    finally
+                    {
+                        semaphoreSlim.Release();
+                    }
+
                 })
-                .Model(model)
+                .Model(model, out semaphoreSlim)
                 .ToView<MyView>()
                 .WithLoop<TaskBasedRenderingLoop<MyModel, MyView>>()
                 .Block();

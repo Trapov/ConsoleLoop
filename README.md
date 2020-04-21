@@ -21,7 +21,7 @@ var renderingLoop = new ConsoleLoopBuilder(cancellationToken: CancellationTokenS
           })
 		  .WithInputEventHandler(keyInfo => keyInfo.Key == System.ConsoleKey.DownArrow, _ =>
 		  {
-		  Model.Skip += 10;
+		    Model.Skip += 10;
 		  })
           .Model(Model)
          .ToView<FileMergeSortView>()
