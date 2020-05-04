@@ -1,3 +1,6 @@
+# Update
+The project was unsuccessful because I had to use **locks** to prevent different threads from accessing the model. I don't like the design I end up with in the end so **I'm dropping** this project. It works as expected but not as clever as the other frameworks. Fell free to do whatever you want with it.
+
 # ConsoleLoop. Loooooop.
 
 Simple console loop with with **model**(view-model) and **view** features.
@@ -14,6 +17,11 @@ Simple console loop with with **model**(view-model) and **view** features.
 Declare a model, view and create a looop.
 ```csharp
 var Model = new FileMergeSortModel();
+
+// have to use it
+SemaphoreSlim semaphoreSlim = null;
+// bad design ^^
+
 var renderingLoop = new ConsoleLoopBuilder(cancellationToken: CancellationTokenSource.Token)
          .WithInputEventHandler(keyInfo => keyInfo.Key == System.ConsoleKey.UpArrow, _ =>
          {
@@ -23,7 +31,7 @@ var renderingLoop = new ConsoleLoopBuilder(cancellationToken: CancellationTokenS
 		  {
 		    Model.Skip += 10;
 		  })
-          .Model(Model)
+          .Model(Model, out semaphoreSlim)
          .ToView<FileMergeSortView>()
          .WithLoop<TaskBasedRenderingLoop<FileMergeSortModel, FileMergeSortView>>();
 ```
